@@ -48,7 +48,7 @@ const Home = () => {
 
     const currentTime = new Date();
     currentTime.setUTCHours(currentTime.getHours());
-
+    currentTime.setUTCDate(currentTime.getDate()+1);
     const formattedTime = currentTime.toISOString().slice(0, 19);
 
     const [favorList, setFavorList] = useState([]);
