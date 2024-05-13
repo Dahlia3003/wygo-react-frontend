@@ -27,7 +27,7 @@ const CommentForm = () => {
         setIsSubmitting(true); // Bắt đầu quá trình gửi
 
         try {
-            const response = await axios.post(process.env.BE_HOST+'/posts/comment', {
+            const response = await axios.post('https://wygo-ojzf.onrender.com/posts/comment', {
                 postId: 2,
                 authorUsername: 'test',
                 content: content

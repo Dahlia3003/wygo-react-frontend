@@ -72,7 +72,7 @@ const RegistrationForm = () => {
         setLoading(true);
 
         try {
-            const response = await axios.post(process.env.BE_HOST+'/users/register', {
+            const response = await axios.post('https://wygo-ojzf.onrender.com/users/register', {
                 username,
                 email,
                 password,

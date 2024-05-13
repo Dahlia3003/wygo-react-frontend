@@ -13,7 +13,7 @@ const PostDetail_Report = () => {
     useEffect(() => {
         const fetchPostId = async () => {
             try {
-                const response = await axios.get(process.env.BE_HOST+`/reports/post/${id}/get-post-id`);
+                const response = await axios.get(`https://wygo-ojzf.onrender.com/reports/post/${id}/get-post-id`);
                 setPostId(response.data);
             } catch (error) {
                 console.error('There was an error fetching post ID!', error);
@@ -26,7 +26,7 @@ const PostDetail_Report = () => {
     const handleDisable = async () => {
         try {
             console.log(postId);
-            const response = await axios.post(process.env.BE_HOST+'/posts/status', {
+            const response = await axios.post('https://wygo-ojzf.onrender.com/posts/status', {
                 postId: postId,
             });
             console.log(response.data);
@@ -41,7 +41,7 @@ const PostDetail_Report = () => {
 
     const handleSkip = async () => {
         try {
-            const response = await axios.post(process.env.BE_HOST+'/reports/post/resolve', {
+            const response = await axios.post('https://wygo-ojzf.onrender.com/reports/post/resolve', {
                 ReportPostId: id,
             });
             console.log(response.data);

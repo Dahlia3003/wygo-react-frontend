@@ -15,7 +15,7 @@ const ViewPostDetail = () => {
     const [contentVisible, setContentVisible] = useState(false);
 
     useEffect(() => {
-        axios.post(process.env.BE_HOST+'/posts/detail',{
+        axios.post('https://wygo-ojzf.onrender.com/posts/detail',{
             postId : id
         })
             .then(response => {
@@ -24,12 +24,12 @@ const ViewPostDetail = () => {
                 setToUser(response.data.author.username);
                 setFromUser(localStorage.getItem('username'));
             })
-        axios.get(process.env.BE_HOST+'/posts/'+id+'/comments')
+        axios.get('https://wygo-ojzf.onrender.com/posts/'+id+'/comments')
             .then(response => {
                 console.log('cmt')
                 setComments(response.data);
             })
-        axios.get(process.env.BE_HOST+'/reactions/'+id+'/getauthors')
+        axios.get('https://wygo-ojzf.onrender.com/reactions/'+id+'/getauthors')
             .then(response => {
                 console.log('react')
                 setReactionAuthors(response.data);

@@ -15,11 +15,11 @@ const ForgotPassword = () => {
 
     const handleSubmitEmail = (e) => {
         e.preventDefault();
-        axios.get(process.env.BE_HOST+`/users/user/${email}`)
+        axios.get(`https://wygo-ojzf.onrender.com/users/user/${email}`)
             .then(response => {
                 setUser(response.data);
                 setStep(2);
-                axios.post(process.env.BE_HOST+'/sendOTP', {
+                axios.post('https://wygo-ojzf.onrender.com/sendOTP', {
                     email: response.data.email,
                     otp: '',
                 })
@@ -33,12 +33,12 @@ const ForgotPassword = () => {
 
     const handleSubmitVerification = (e) => {
         e.preventDefault();
-        axios.post(process.env.BE_HOST+'/verifyOTP', {
+        axios.post('https://wygo-ojzf.onrender.com/verifyOTP', {
             email: user.email,
             otp: verificationCode,
         })
             .then(response => {
-                axios.post(process.env.BE_HOST+'/users/change-info', {
+                axios.post('https://wygo-ojzf.onrender.com/users/change-info', {
                     username: user.username,
                     changeType: 'password',
                     newInfo: newPassword,

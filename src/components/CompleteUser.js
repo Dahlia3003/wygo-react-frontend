@@ -14,7 +14,7 @@ const UserForm = ({ username }) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post(process.env.BE_HOST+'/users/create', {
+            const response = await axios.post('https://wygo-ojzf.onrender.com/users/create', {
                 username,
                 name,
                 birth,

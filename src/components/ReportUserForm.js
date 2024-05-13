@@ -18,7 +18,7 @@ const ReportPost = ({ onClose }) => {
             reason: selectedReason === 'Khác' ? otherReason : selectedReason
         };
 
-        axios.post(process.env.BE_HOST+'/reports/user', data)
+        axios.post('https://wygo-ojzf.onrender.com/reports/user', data)
             .then(response => {
                 setOpenSnackbar(true);
                 setSnackbarMessage(response.data);

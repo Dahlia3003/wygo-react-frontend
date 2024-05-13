@@ -84,7 +84,7 @@ const EditProfile = () => {
     };
 
     const handleUpdateClick = (username, changeType, newInfo, field) => {
-        axios.post(process.env.BE_HOST+'/users/change-info', {
+        axios.post('https://wygo-ojzf.onrender.com/users/change-info', {
             username: username,
             changeType: changeType,
             newInfo: newInfo,
@@ -126,7 +126,7 @@ const EditProfile = () => {
         bio: '',
     });
     useEffect(() => {
-        axios.get(process.env.BE_HOST+'/users/loki')
+        axios.get('https://wygo-ojzf.onrender.com/users/loki')
             .then(response => {
                 const { user } = response.data;
                 setUserData({
