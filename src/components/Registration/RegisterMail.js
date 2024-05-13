@@ -63,15 +63,9 @@ const OtpForm = () => {
             setMessage({ type: 'success', content: response.data });
             setIsOtpSent(true);
         } catch (error) {
-            if (error.response.status === 400 || error.response.status === 500) {
-                // Nếu nhận được bad request, cho phép tiếp tục gửi OTP
                 const response = await axios.post(process.env.BE_HOST+'/sendOTP', { email });
                 setMessage({ type: 'success', content: response.data });
                 setIsOtpSent(true);
-            } else {
-                // Xử lý các lỗi khác
-                setMessage({ type: 'error', content: error.response.data });
-            }
         } finally {
             setIsSending(false);
         }
