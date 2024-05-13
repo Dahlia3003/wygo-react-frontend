@@ -5,7 +5,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import LogoutIcon from '@mui/icons-material/Logout';
 import EditIcon from '@mui/icons-material/Edit';
 import {useNavigate} from "react-router-dom";
-import SearchBar from "./SearchBar";
+import SearchBar from "../Search/SearchBar";
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
     backgroundColor: '#edf2fa', // Màu nền thanh nav
