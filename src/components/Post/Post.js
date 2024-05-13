@@ -33,7 +33,7 @@ const Post = (props) => {
 
     const handleReactClick = async () => {
         try {
-            const response = await fetch('http://localhost:8080/reactions/react', {
+            const response = await fetch('https://wygo-ojzf.onrender.com/reactions/react', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

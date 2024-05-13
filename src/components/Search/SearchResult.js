@@ -19,7 +19,7 @@
         useEffect(() => {
             const search = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:8080/search?query=${query}`);
+                    const response = await axios.get(`https://wygo-ojzf.onrender.com/search?query=${query}`);
                     const formattedPosts = response.data.posts.map(post => {
                         const dateObject = new Date(post.formattedDate);
                         const day = String(dateObject.getDate()).padStart(2, '0');
