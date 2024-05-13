@@ -47,6 +47,7 @@ const OtpForm = () => {
 
         try {
             // Kiểm tra xem email đã tồn tại chưa
+            console.log(process.env.BE_HOST.toString());
             const checkEmailResponse = await axios.get(process.env.BE_HOST.toString()+`/users/user/${email}`);
             console.log(process.env.BE_HOST.toString());
             console.log(process.env.BE_HOST);
