@@ -1,7 +1,7 @@
 import backgroundImage from '../../images/login_background.png';
 import './Login.css'
 import {useState, useEffect } from "react";
-import {TextField, Button, Box, Typography, Link, IconButton, Snackbar} from '@mui/material';
+import {TextField, Button, Box, Typography, Link, IconButton, Snackbar, CircularProgress} from '@mui/material';
 import axios from 'axios';
 import { Close as CloseIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +17,8 @@ const Login = () => {
 
     const [contentVisible, setContentVisible] = useState(false);
 
+    const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
         if (localStorage.getItem('loginState')==='ok'){
             navigate('/home');
@@ -29,12 +31,14 @@ const Login = () => {
     }, []);
 
     const handleLogin = () => {
-        axios.post('https://wygo-8nke.onrender.com/users/login', {
+        setIsLoading(true);
+        axios.post('https://wygo-ojzf.onrender.com/users/login', {
             username: email,
             password: password
         })
             .then(response => {
-                axios.get(`https://wygo-8nke.onrender.com/users/user/${email}`)
+
+                axios.get(`https://wygo-ojzf.onrender.com/users/user/${email}`)
                     .then(response => {
                         localStorage.setItem('username', response.data.username);
                         localStorage.setItem('idUser', response.data.id);
@@ -44,6 +48,7 @@ const Login = () => {
                             localStorage.setItem('isAdmin', 'ok');
                         }
                         localStorage.setItem('name', response.data.name);
+                        setIsLoading(false);
                         navigate('/home');
                     })
             })
@@ -71,8 +76,12 @@ const Login = () => {
                                        onChange={(e) => setPassword(e.target.value)}
                                        sx={{ mb: 2, width: '100%' }} />
                             <Link href="/forgot-password" variant="body2" sx={{ mb: 2 }}>Quên mật khẩu?</Link>
-                            <Button variant="contained" onClick={handleLogin} sx={{ width: '100%', bgcolor: '#007bff', color: 'white', '&:hover': { bgcolor: '#0056b3' } }}>Đăng Nhập</Button>
-                            <Link href="/registration" variant="body2" sx={{ mb: 2, margin: '1.5rem'}}>Chưa có tài khoản? Đăng ký ngay</Link>
+                            {isLoading ? ( // Hiển thị hiệu ứng processing nếu isLoading là true
+                                <CircularProgress sx={{ color: '#007bff' }} />
+                            ) : (
+                                <Button variant="contained" onClick={handleLogin} sx={{ width: '100%', bgcolor: '#007bff', color: 'white', '&:hover': { bgcolor: '#0056b3' } }}>Đăng Nhập</Button>
+                            )}
+                            <Link href="/registration" variant="body2" sx={{ mb: 2, margin: '1.5rem' }}>Chưa có tài khoản? Đăng ký ngay</Link>
                         </Box>
                     </Box>
 

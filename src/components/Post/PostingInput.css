@@ -47,11 +47,20 @@
     display: flex;
 }
 
+.content_text i{
+    transform: translateY(15px);
+}
+
 .input_text{
     width: 100%;
     font-size: 1rem;
     border: 0;
     margin-top: 1rem;
+}
+
+.input_text:focus {
+    outline: none;
+    border-color: transparent;
 }
 
 .posting_options_mini_button{
@@ -83,15 +92,64 @@
     justify-content: center;
     text-align: center;
     align-items: center;
-    margin-left: 1rem;
-    margin-right: 1rem;
-    margin-top: 1rem;
+    margin: 1rem;
     padding: 1rem;
     border-radius: 0.5rem;
-    background-color: #e4e6eb;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .post_submit_button .blurred_text {
     color: grey;
 }
+
+.post_submit_button .text_filled{
+    color: white;
+}
+
+.post_submit_button .filled {
+    background: blue !important;
+}
+
+.post_submit_button .not_filled {
+    background: #e4e6eb !important;
+}
+
+.media_area{
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 10rem;
+    background-color: white;
+    border-radius: 0.5rem;
+    border: 1px dashed #000000;
+    overflow-y: auto;
+}
+
+.media_upload_label
+{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.media_area img {
+    width: 100%;
+    height: fit-content;
+}
+
+.media_area video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.map_container {
+    width: 10rem;
+    height: 10rem;
+    overflow: hidden;
+}
+

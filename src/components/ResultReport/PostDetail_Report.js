@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import './PostDetail_Report.css';
-import ViewPostDetail from '../ViewPostDetail';
+import ViewPostDetail from '../Post/ViewPostDetail';
 
 const PostDetail_Report = () => {
     const { id } = useParams(); // Lấy id từ URL

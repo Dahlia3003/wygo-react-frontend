@@ -5,7 +5,7 @@ import RegistrationPage from "./pages/RegistrationPage";
 import SearchResultPage from "./pages/SearchResultPage";
 import NavBar from "./components/NavBar/NavBar";
 import Home from "./components/Home";
-import EditProfile from "./components/EditProfile";
+import EditProfile from "./components/Profile/EditProfile";
 import ForgotPassword from "./components/Login/ForgotPassword";
 import ViewAllUserReport from "./components/ViewAllUserReport";
 import ReportPost from "./components/ReportPost";
@@ -14,6 +14,8 @@ import ReportUserForm from "./components/ReportUserForm";
 import CommentForm from "./components/Comment/CommentForm";
 import CommentLoader from "./components/Comment/CommentLoader";
 import PostDetail_Report from "./components/ResultReport/PostDetail_Report";
+import PersonalPage from "./components/Profile/PersonalPage";
+
 
 function App() {
     return (
@@ -28,6 +30,7 @@ function App() {
                     <Route index element={<Login />} />
                     <Route path="home" element={<Home />} />
 
+                    <Route path="/:query" element={<PersonalPage/>}/>
                     <Route path="/search/:query" element={<SearchResultPage/>}/>
                     <Route path="edit-profile" element={<EditProfile />} />
                     <Route path="forgot-password" element={<ForgotPassword />} />
