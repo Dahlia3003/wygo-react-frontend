@@ -44,10 +44,11 @@ const OtpForm = () => {
         }
 
         setIsSending(true);
+        console.log("1"+process.env.BE_HOST);
+        console.log("2"+process.env.BE_HOST.toString());
 
         try {
             // Kiểm tra xem email đã tồn tại chưa
-            console.log(process.env.BE_HOST);
             const checkEmailResponse = await axios.get(process.env.BE_HOST.toString()+`/users/user/${email}`);
 
             // Nếu nhận được một object, nghĩa là email đã tồn tại
