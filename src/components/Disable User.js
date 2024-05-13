@@ -7,13 +7,13 @@ const UserActivation = () => {
 
     useEffect(() => {
         // Lấy trạng thái kích hoạt hiện tại của người dùng từ server
-        axios.get(`http://localhost:8080/users/id/${userId}`)
+        axios.get(process.env.BE_HOST+`/users/id/${userId}`)
             .then(response => setIsActive(response.data.available))
             .catch(error => console.error('Error during fetch', error));
     }, [userId]);
 
     const toggleActivation = () => {
-        const url = `http://localhost:8080/users/${userId}/${isActive ? 'disable' : 'enable'}`;
+        const url = process.env.BE_HOST+`/users/${userId}/${isActive ? 'disable' : 'enable'}`;
         axios.post(url)
             .then(response => setIsActive(response.data.available))
             .catch(error => console.error('Error during activation', error));

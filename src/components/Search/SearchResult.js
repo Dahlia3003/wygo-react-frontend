@@ -19,7 +19,7 @@ const SearchResult = ({ query }) => {
     useEffect(() => {
         const search = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/search?query=${query}`);
+                const response = await axios.get(process.env.BE_HOST+`/search?query=${query}`);
                 const formattedPosts = response.data.posts.map(post => {
                     const dateObject = new Date(post.postTime[0], post.postTime[1] - 1, post.postTime[2], post.postTime[3], post.postTime[4], post.postTime[5], post.postTime[6]);
                     const day = String(dateObject.getDate()).padStart(2, '0');

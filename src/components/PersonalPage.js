@@ -11,7 +11,7 @@ const PersonalPage = () =>
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/profile/user2`);
+                const response = await fetch(process.env.BE_HOST+`/profile/user2`);
                 if (response.ok) {
                     const data = await response.json();
                     data.posts.forEach(async (post) => {
@@ -22,7 +22,7 @@ const PersonalPage = () =>
                         post.formattedDate = `${day} tháng ${month}, ${year}`;
 
                         // Fetch comments for each post
-                        const commentResponse = await fetch(`http://localhost:8080/posts/${post.id}/comments`);
+                        const commentResponse = await fetch(process.env.BE_HOST+`/posts/${post.id}/comments`);
                         if (commentResponse.ok) {
                             const commentData = await commentResponse.json();
                             post.comments = commentData;

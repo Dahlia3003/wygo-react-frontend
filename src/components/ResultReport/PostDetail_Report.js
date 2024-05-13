@@ -13,7 +13,7 @@ const PostDetail_Report = () => {
     useEffect(() => {
         const fetchPostId = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/reports/post/${id}/get-post-id`);
+                const response = await axios.get(process.env.BE_HOST+`/reports/post/${id}/get-post-id`);
                 setPostId(response.data);
             } catch (error) {
                 console.error('There was an error fetching post ID!', error);

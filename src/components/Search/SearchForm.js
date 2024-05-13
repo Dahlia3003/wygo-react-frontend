@@ -7,7 +7,7 @@ const Search = () => {
 
     const search = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/search?query=${query}`);
+            const response = await axios.get(process.env.BE_HOST+`/search?query=${query}`);
             setResults(response.data);
         } catch (error) {
             console.error('Error during search', error);

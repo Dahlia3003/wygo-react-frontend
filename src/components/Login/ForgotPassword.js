@@ -15,7 +15,7 @@ const ForgotPassword = () => {
 
     const handleSubmitEmail = (e) => {
         e.preventDefault();
-        axios.get(`http://localhost:8080/users/user/${email}`)
+        axios.get(process.env.BE_HOST+`/users/user/${email}`)
             .then(response => {
                 setUser(response.data);
                 setStep(2);
