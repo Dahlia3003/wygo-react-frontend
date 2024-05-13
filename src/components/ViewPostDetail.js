@@ -15,7 +15,7 @@ const ViewPostDetail = () => {
     const [contentVisible, setContentVisible] = useState(false);
 
     useEffect(() => {
-        axios.post('http://localhost:8080/posts/detail',{
+        axios.post(process.env.BE_HOST+'/posts/detail',{
             postId : id
         })
             .then(response => {
@@ -24,12 +24,12 @@ const ViewPostDetail = () => {
                 setToUser(response.data.author.username);
                 setFromUser(localStorage.getItem('username'));
             })
-        axios.get('http://localhost:8080/posts/'+id+'/comments')
+        axios.get(process.env.BE_HOST+'/posts/'+id+'/comments')
             .then(response => {
                 console.log('cmt')
                 setComments(response.data);
             })
-        axios.get('http://localhost:8080/reactions/'+id+'/getauthors')
+        axios.get(process.env.BE_HOST+'/reactions/'+id+'/getauthors')
             .then(response => {
                 console.log('react')
                 setReactionAuthors(response.data);

@@ -14,7 +14,7 @@ const UserForm = ({ username }) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8080/users/create', {
+            const response = await axios.post(process.env.BE_HOST+'/users/create', {
                 username,
                 name,
                 birth,

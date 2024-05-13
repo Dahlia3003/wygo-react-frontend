@@ -9,7 +9,7 @@ const ViewAllUserReport = () => {
     useEffect(() => {
         const fetchReports = async () => {
             try {
-                const response = await axios.post('http://localhost:8080/reports/user/all');
+                const response = await axios.post(process.env.BE_HOST+'/reports/user/all');
                 setReports(response.data);
             } catch (error) {
                 console.error('Error fetching reports:', error);

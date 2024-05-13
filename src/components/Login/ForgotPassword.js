@@ -19,7 +19,7 @@ const ForgotPassword = () => {
             .then(response => {
                 setUser(response.data);
                 setStep(2);
-                axios.post('http://localhost:8080/sendOTP', {
+                axios.post(process.env.BE_HOST+'/sendOTP', {
                     email: response.data.email,
                     otp: '',
                 })
@@ -33,12 +33,12 @@ const ForgotPassword = () => {
 
     const handleSubmitVerification = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:8080/verifyOTP', {
+        axios.post(process.env.BE_HOST+'/verifyOTP', {
             email: user.email,
             otp: verificationCode,
         })
             .then(response => {
-                axios.post('http://localhost:8080/users/change-info', {
+                axios.post(process.env.BE_HOST+'/users/change-info', {
                     username: user.username,
                     changeType: 'password',
                     newInfo: newPassword,

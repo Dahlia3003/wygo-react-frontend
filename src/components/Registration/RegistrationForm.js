@@ -72,7 +72,7 @@ const RegistrationForm = () => {
         setLoading(true);
 
         try {
-            const response = await axios.post('http://localhost:8080/users/register', {
+            const response = await axios.post(process.env.BE_HOST+'/users/register', {
                 username,
                 email,
                 password,

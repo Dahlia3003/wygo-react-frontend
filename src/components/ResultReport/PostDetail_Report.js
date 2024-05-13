@@ -26,7 +26,7 @@ const PostDetail_Report = () => {
     const handleDisable = async () => {
         try {
             console.log(postId);
-            const response = await axios.post('http://localhost:8080/posts/status', {
+            const response = await axios.post(process.env.BE_HOST+'/posts/status', {
                 postId: postId,
             });
             console.log(response.data);
@@ -41,7 +41,7 @@ const PostDetail_Report = () => {
 
     const handleSkip = async () => {
         try {
-            const response = await axios.post('http://localhost:8080/reports/post/resolve', {
+            const response = await axios.post(process.env.BE_HOST+'/reports/post/resolve', {
                 ReportPostId: id,
             });
             console.log(response.data);

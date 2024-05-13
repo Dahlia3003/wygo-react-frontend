@@ -84,7 +84,7 @@ const EditProfile = () => {
     };
 
     const handleUpdateClick = (username, changeType, newInfo, field) => {
-        axios.post('http://localhost:8080/users/change-info', {
+        axios.post(process.env.BE_HOST+'/users/change-info', {
             username: username,
             changeType: changeType,
             newInfo: newInfo,
@@ -126,7 +126,7 @@ const EditProfile = () => {
         bio: '',
     });
     useEffect(() => {
-        axios.get('http://localhost:8080/users/loki')
+        axios.get(process.env.BE_HOST+'/users/loki')
             .then(response => {
                 const { user } = response.data;
                 setUserData({

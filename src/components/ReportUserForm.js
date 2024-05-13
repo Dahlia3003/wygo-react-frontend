@@ -18,7 +18,7 @@ const ReportPost = ({ onClose }) => {
             reason: selectedReason === 'Khác' ? otherReason : selectedReason
         };
 
-        axios.post('http://localhost:8080/reports/user', data)
+        axios.post(process.env.BE_HOST+'/reports/user', data)
             .then(response => {
                 setOpenSnackbar(true);
                 setSnackbarMessage(response.data);

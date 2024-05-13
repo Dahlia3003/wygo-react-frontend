@@ -8,7 +8,7 @@ const CommentList = () => {
     useEffect(() => {
         const fetchComments = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/posts/2/comments'); // Adjust URL as needed
+                const response = await axios.get(process.env.BE_HOST+'/posts/2/comments'); // Adjust URL as needed
                 setComments(response.data.map(comment => ({
                     ...comment,
                     showFullContent: false // Thêm trường showFullContent để xác định xem nội dung có được hiển thị đầy đủ hay không

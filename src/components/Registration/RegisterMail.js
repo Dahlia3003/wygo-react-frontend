@@ -56,13 +56,13 @@ const OtpForm = () => {
             }
 
             // Nếu email không tồn tại, gửi OTP
-            const response = await axios.post('http://localhost:8080/sendOTP', { email });
+            const response = await axios.post(process.env.BE_HOST+'/sendOTP', { email });
             setMessage({ type: 'success', content: response.data });
             setIsOtpSent(true);
         } catch (error) {
             if (error.response.status === 400 || error.response.status === 500) {
                 // Nếu nhận được bad request, cho phép tiếp tục gửi OTP
-                const response = await axios.post('http://localhost:8080/sendOTP', { email });
+                const response = await axios.post(process.env.BE_HOST+'/sendOTP', { email });
                 setMessage({ type: 'success', content: response.data });
                 setIsOtpSent(true);
             } else {
@@ -80,7 +80,7 @@ const OtpForm = () => {
     const handleVerifyOTP = async () => {
         setIsVerifying(true);
         try {
-            const response = await axios.post('http://localhost:8080/verifyOTP', { email, otp });
+            const response = await axios.post(process.env.BE_HOST+'/verifyOTP', { email, otp });
             setMessage({ type: 'success', content: response.data });
             // Lưu email đã xác thực vào local storage
             localStorage.setItem('verifiedEmail', email);
