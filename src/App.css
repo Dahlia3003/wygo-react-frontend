@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
 .App {
   text-align: center;
 }
@@ -12,7 +14,9 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
+body {
+  font-family: 'Roboto', sans-serif;
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

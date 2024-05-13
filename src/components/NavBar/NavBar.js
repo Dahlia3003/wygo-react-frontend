@@ -8,7 +8,7 @@ import {useNavigate} from "react-router-dom";
 import SearchBar from "../Search/SearchBar";
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
-    backgroundColor: '#edf2fa', // Màu nền thanh nav
+    backgroundColor: '#ffffff', // Màu nền thanh nav
     boxShadow: '0px 2px 4px -1px rgba(0,0,0,0.2)', // Đổ bóng nhẹ dưới
     position: 'sticky', // Sticky to top
     top: 0, // Align to top of viewport

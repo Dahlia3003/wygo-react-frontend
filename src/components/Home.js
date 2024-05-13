@@ -7,12 +7,13 @@ import PostingInput from "./Post/PostingInput";
 import Posting from "./Post/Posting";
 import NavBar from "./NavBar/NavBar";
 
-
 const Home = () => {
 
     const [isPostingInputVisible, setPostingInputVisible] = useState(false)
 
     const [contentVisible, setContentVisible] = useState(false);
+
+    const [requestTime, setRequestTime] = useState([]);
 
 
 
@@ -49,6 +50,8 @@ const Home = () => {
     const currentTime = new Date();
     currentTime.setUTCHours(currentTime.getHours());
     currentTime.setUTCDate(currentTime.getDate()+1);
+    currentTime.setUTCMonth(currentTime.getMonth());
+
     const formattedTime = currentTime.toISOString().slice(0, 19);
 
     const [favorList, setFavorList] = useState([]);
@@ -59,20 +62,24 @@ const Home = () => {
     const getFavorPost = () => {
         console.log('getMore');
 
-        const timestampArray = localStorage.getItem('lastTimePost').split(',');
+        let formattedTimeString= localStorage.getItem('lastTimePost').slice(0, 19);
+        if (!localStorage.getItem('lastTimePost').includes('T')){
+            const timestampArray = localStorage.getItem('lastTimePost').split(',');
 
-        const parsedArray = timestampArray.map(value => parseInt(value));
-        console.log(parsedArray);
-        const time = new Date(parsedArray[0], parsedArray[1] - 1, parsedArray[2], parsedArray[3], parsedArray[4], parsedArray[5], parsedArray[6]);
-        time.setUTCHours(parsedArray[3]);
-        time.setUTCMinutes(parsedArray[4]);
-        time.setUTCSeconds(parsedArray[5]);
-        time.setUTCDate(parsedArray[2]);
-        const formattedTimeString = time.toISOString().slice(0, 19);
+            const parsedArray = timestampArray.map(value => parseInt(value));
+            console.log(parsedArray);
+            const time = new Date(parsedArray[0], parsedArray[1] - 1, parsedArray[2], parsedArray[3], parsedArray[4], parsedArray[5], parsedArray[6]);
+            time.setUTCHours(parsedArray[3]);
+            time.setUTCMinutes(parsedArray[4]);
+            time.setUTCSeconds(parsedArray[5]);
+            time.setUTCDate(parsedArray[2]);
+            formattedTimeString = time.toISOString().slice(0, 19);
+        }
 
-        console.log(formattedTimeString);
-
-
+        if (requestTime.includes(formattedTimeString)){
+            return;
+        }
+        setRequestTime(prevState => [...prevState, formattedTimeString])
         axios.get('https://wygo-ojzf.onrender.com/homepage/recommend-post/'+localStorage.getItem('username')+'/'+formattedTimeString)
             .then(response =>{
                 if (response.data.length===0){
@@ -84,7 +91,6 @@ const Home = () => {
                     setHasPost(false);
                 }
                 setFavorPost(prevFavorPost => [...prevFavorPost, ...response.data]); // Cập nhật favorPost bằng cách kết hợp mảng cũ và mảng mới
-                console.log(favorPost);
                 if (response.data.length > 0) {
                     const lastFavorPost = response.data.slice(-1)[0];
                     localStorage.setItem('lastTimePost', lastFavorPost.postTime);
@@ -94,21 +100,26 @@ const Home = () => {
     useEffect(() =>{
         if (localStorage.getItem('username')!==null)
         {
+            console.log('first'+formattedTime);
             axios.get('https://wygo-ojzf.onrender.com/homepage/recommend-user/'+localStorage.getItem('username'))
                 .then(response =>{
                     setFavorList(response.data);
                 });
-            axios.get('https://wygo-ojzf.onrender.com/homepage/recommend-post/'+localStorage.getItem('username')+'/'+formattedTime)
-                .then(response =>{
-                    console.log("in");
-                    setFavorPost(response.data);
-                    if (favorPost.length>0){
-                        if (favorPost.length>0){
-                            const lastFavorPost = favorPost.slice(-1)[0];
+            if (!requestTime.includes(formattedTime))
+            {
+                setRequestTime(prevState => [...prevState, formattedTime]);
+                axios.get('https://wygo-ojzf.onrender.com/homepage/recommend-post/'+localStorage.getItem('username')+'/'+formattedTime)
+                    .then(response =>{
+                        setFavorPost(response.data);
+                        console.log("get first data ok");
+                        console.log(response.data.length);
+                        if (response.data.length>0){
+                            const lastFavorPost = response.data.slice(-1)[0];
                             localStorage.setItem('lastTimePost',lastFavorPost.postTime);
+                            console.log("stored");
                         }
-                    }
-                });
+                    });
+            }
         }
     },[])
     const navigate = useNavigate();
@@ -122,12 +133,12 @@ const Home = () => {
 
     useEffect(() => {
         if (hasPost){
-            console.log("load more here");
             const lastPostElement = document.querySelector('.last-post');
             if (!lastPostElement) return; //
-            console.log("ok here");
+            console.log("obs ok here");
             observer.current = new IntersectionObserver(entries => {
                 if (entries[0].isIntersecting) {
+                    console.log("in obs");
                     loadMorePosts();
                 }
             });
@@ -147,12 +158,33 @@ const Home = () => {
 
 
     const loadMorePosts = async () => {
+
+        let formattedTimeString= localStorage.getItem('lastTimePost').slice(0, 19);
+        if (!localStorage.getItem('lastTimePost').includes('T')){
+            const timestampArray = localStorage.getItem('lastTimePost').split(',');
+
+            const parsedArray = timestampArray.map(value => parseInt(value));
+            console.log(parsedArray);
+            const time = new Date(parsedArray[0], parsedArray[1] - 1, parsedArray[2], parsedArray[3], parsedArray[4], parsedArray[5], parsedArray[6]);
+            time.setUTCHours(parsedArray[3]);
+            time.setUTCMinutes(parsedArray[4]);
+            time.setUTCSeconds(parsedArray[5]);
+            time.setUTCDate(parsedArray[2]);
+            formattedTimeString = time.toISOString().slice(0, 19);
+        }
+
+        if (requestTime.includes(formattedTimeString)){
+            return;
+        }
+
+
         setLoading(true);
         try {
+            console.log("in try catch");
             getFavorPost();
             setTimeout(() => {
                 setLoading(false);
-            }, 1000);
+            }, 3000);
         } catch (error) {
             console.error('Error fetching more posts:', error);
         }
@@ -178,19 +210,16 @@ const Home = () => {
             postId : id
         })
             .then(response => {
-                console.log('post');
                 setPost(response.data)
                 setToUser(response.data.author.username);
                 setFromUser(localStorage.getItem('username'));
             })
         axios.get('https://wygo-ojzf.onrender.com/posts/'+id+'/comments')
             .then(response => {
-                console.log('cmt');
                 setComments(response.data);
             })
         axios.get('https://wygo-ojzf.onrender.com/reactions/'+id+'/getauthors')
             .then(response => {
-                console.log('react');
                 setReactionAuthors(response.data);
             })
     }
