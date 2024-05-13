@@ -47,10 +47,8 @@ const OtpForm = () => {
 
         try {
             // Kiểm tra xem email đã tồn tại chưa
-            console.log(process.env.BE_HOST.toString());
-            const checkEmailResponse = await axios.get(process.env.BE_HOST.toString()+`/users/user/${email}`);
-            console.log(process.env.BE_HOST.toString());
             console.log(process.env.BE_HOST);
+            const checkEmailResponse = await axios.get(process.env.BE_HOST.toString()+`/users/user/${email}`);
 
             // Nếu nhận được một object, nghĩa là email đã tồn tại
             if (checkEmailResponse.data) {
@@ -63,7 +61,7 @@ const OtpForm = () => {
             setMessage({ type: 'success', content: response.data });
             setIsOtpSent(true);
         } catch (error) {
-                const response = await axios.post(process.env.BE_HOST+'/sendOTP', { email });
+                    const response = await axios.post(process.env.BE_HOST+'/sendOTP', { email });
                 setMessage({ type: 'success', content: response.data });
                 setIsOtpSent(true);
         } finally {
