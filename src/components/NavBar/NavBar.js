@@ -5,7 +5,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import LogoutIcon from '@mui/icons-material/Logout';
 import EditIcon from '@mui/icons-material/Edit';
 import {useNavigate} from "react-router-dom";
-import SearchBar from "../Search/SearchBar";
+import SearchBar from "./SearchBar";
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
     backgroundColor: '#edf2fa', // Màu nền thanh nav
@@ -52,7 +52,7 @@ const NavBar = () => {
                             <HomeIcon />
                         </IconButton>
                         <SearchBar onSearch={search} />
-                        <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', marginLeft: 'auto' }} onClick={() => window.location.href = `http://localhost:3000/${username}`}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', marginLeft: 'auto' }} onClick={() => window.location.href = `https://wygo-react-frontend.vercel.app/${username}`}>
                             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginRight: 1 }}>
                                 <Typography variant="h6" noWrap component="div" sx={{ color: '#000', fontWeight: 'bold' }}>
                                     {name}
