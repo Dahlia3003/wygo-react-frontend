@@ -46,7 +46,7 @@ const OtpForm = () => {
         setIsSending(true);
         try {
             // Kiểm tra xem email đã tồn tại chưa
-            const checkEmailResponse = await axios.get(process.env.BE_HOST+`/users/user/${email}`);
+            const checkEmailResponse = await axios.get(`https://wygo-ojzf.onrender.com/users/user/${email}`);
 
             // Nếu nhận được một object, nghĩa là email đã tồn tại
             if (checkEmailResponse.data) {
