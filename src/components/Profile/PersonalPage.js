@@ -8,7 +8,7 @@ import './PersonalPage.css'
 const PersonalPage = () =>
 {
     const {username} = useParams();
-    console.log(username)
+
     const [userData, setUserData] = useState('');
     const [commentList, setCommentList] = useState('')
     const [activeTab, setActiveTab] = useState('posts');
@@ -19,7 +19,6 @@ const PersonalPage = () =>
 
     const [hasUpvoted, setHasUpvoted] = useState(false);
     const [hasDownvoted, setHasDownvoted] = useState(false);
-
     const fetchUserData = async () => {
         try {
             const response = await fetch(`https://wygo-ojzf.onrender.com/profile/${toUser}`);

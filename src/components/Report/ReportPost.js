@@ -2,19 +2,20 @@ import React, { useState } from 'react';
 import './ReportPost.css';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
-import {Box, IconButton, Snackbar, Typography} from "@mui/material";
+import { Box, IconButton, Snackbar, Typography } from "@mui/material";
 
-const ReportPost = ({ onClose }) => {
+const ReportPost = ({ postId, userReportedId, onClose }) => {
     const [selectedReason, setSelectedReason] = useState('');
     const [otherReason, setOtherReason] = useState('');
 
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
-
+    const [snackbarColor, setSnackbarColor] = useState('success');
     const handleReport = () => {
+        console.log(selectedReason)
         const data = {
-            postId: "1",
-            userReportedId: "1",
+            postId: postId, // Use the postId prop
+            userReportedId: localStorage.getItem('idUser'), // Use the userReportedId prop
             reportType: selectedReason === 'Khác' ? otherReason : selectedReason
         };
 
@@ -33,10 +34,6 @@ const ReportPost = ({ onClose }) => {
                 }
             });
     };
-    const setSnackbarColor = (color) => {
-        setColor(color);
-    };
-    const [snackbarColor, setColor] = useState('success');
 
     return (
         <div className="report-post-container">

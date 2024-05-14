@@ -35,13 +35,13 @@ const Login = () => {
 
     const handleLogin = () => {
         setIsLoading(true);
-        axios.post('http://localhost:8080/users/login', {
+        axios.post('https://wygo-ojzf.onrender.com/users/login', {
             username: email,
             password: password
         })
             .then(response => {
                 setIsLoading(false);
-                axios.get(`http://localhost:8080/users/user/${email}`)
+                axios.get(`https://wygo-ojzf.onrender.com/users/user/${email}`)
                     .then(response => {
                         localStorage.setItem('username', response.data.username);
                         localStorage.setItem('idUser', response.data.id);

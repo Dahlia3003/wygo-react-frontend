@@ -2,16 +2,38 @@ import React, { useState, useEffect, useRef } from 'react';
 import L from 'leaflet';
 import './Post.css';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import ReportPost from "../Report/ReportPost";
+
+
 
 const Post = (props) => {
     const { post, comments, reactionAuthors, fromUser, toUser } = props;
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+
+        // Check if date is valid
+        if (isNaN(date)) {
+            return 'Invalid date';
+        }
+
+        const day = date.getDate();
+        const month = date.getMonth() + 1; // Months are zero-based, so add 1
+        const year = date.getFullYear();
+
+        // Construct the formatted date string
+        const formattedDate = `${day} tháng ${month}, ${year}`;
+
+        return formattedDate;
+    }
+
+    const formattedDate = formatDate(post.postTime);
 
     const [commentsFetched, setCommentsFetched] = useState(false);
     const [hasReacted, setHasReacted] = useState(reactionAuthors && reactionAuthors.includes(fromUser));
     const [showMap, setShowMap] = useState(false);
+    const [showReport, setShowReport] = useState(false); // State for showing the ReportPost component
     const mapContainerRef = useRef(null);
     const mapRef = useRef(null);
-
     useEffect(() => {
         if (comments && comments.length > 0) {
             setCommentsFetched(true);
@@ -54,6 +76,14 @@ const Post = (props) => {
         }
     };
 
+    const handleReportClick = () => {
+        setShowReport(true);
+    };
+
+    const handleCloseReport = () => {
+        setShowReport(false);
+    };
+
     return (
         <div className='post_container'>
             <div className='post_header'>
@@ -62,7 +92,7 @@ const Post = (props) => {
                 </div>
                 <div className='post_header_info'>
                     <h4>{post.author.name}</h4>
-                    <div>{post.formattedDate}</div>
+                    <div>{formattedDate}</div>
                     <a
                         className='post_header_info_location'
                         href={`https://www.google.com/maps/search/?api=1&query=${post.location}`}
@@ -73,11 +103,11 @@ const Post = (props) => {
                         <div>{post.location}</div>
                     </a>
                 </div>
-                { fromUser !== toUser &&            (
-                    <div className='post_more_button'>
-                        <i style={{color:"red"}} className="fas fa-flag"></i>
-                    </div>)
-                }
+                {fromUser !== toUser && (
+                    <div style={{cursor:'pointer'}} className='post_more_button'>
+                        <i style={{color:"red"}} className="fas fa-flag" onClick={handleReportClick}></i>
+                    </div>
+                )}
             </div>
             {showMap && (
                 <MapContainer className={'map_hover'} center={post.location.split(',').map(parseFloat)} zoom={13}>
@@ -138,8 +168,9 @@ const Post = (props) => {
                     </div>
                 </div>
             ))}
+            {showReport && <ReportPost postId={post.id} onClose={handleCloseReport} />}
         </div>
-    )
+    );
 }
 
 export default Post;

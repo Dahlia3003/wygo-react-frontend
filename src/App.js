@@ -6,7 +6,7 @@ import SearchResultPage from "./pages/SearchResultPage";
 import Home from "./components/Home";
 import EditProfile from "./components/Profile/EditProfile";
 import ForgotPassword from "./components/Login/ForgotPassword";
-import ReportPost from "./components/ReportPost";
+import ReportPost from "./components/Report/ReportPost";
 import Login from "./components/Login/Login";
 import ReportUserForm from "./components/ReportUserForm";
 import CommentForm from "./components/Comment/CommentForm";
