@@ -3,11 +3,12 @@ import {useEffect, useState} from "react";
 import Posting from "../Post/Posting";
 import Post from "../Post/Post";
 import PostingInput from "../Post/PostingInput";
-
+import './PersonalPage.css'
 
 const PersonalPage = () =>
 {
     const {username} = useParams();
+    console.log(username)
     const [userData, setUserData] = useState('');
     const [commentList, setCommentList] = useState('')
     const [activeTab, setActiveTab] = useState('posts');
