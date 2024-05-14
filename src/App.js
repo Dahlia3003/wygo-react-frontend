@@ -34,7 +34,7 @@ function App() {
                     <Route index element={<Login />} />
                     <Route path="home" element={<Home />} />
 
-                    <Route path="/:query" element={<PersonalPage/>}/>
+                    <Route path="profile/:username" element={<PersonalPage />} />
                     <Route path="/search/:query" element={<SearchResultPage/>}/>
                     <Route path="edit-profile" element={<EditProfile />} />
                     <Route path="forgot-password" element={<ForgotPassword />} />

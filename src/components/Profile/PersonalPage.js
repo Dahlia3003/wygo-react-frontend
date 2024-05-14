@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {useEffect, useState} from "react";
 import Posting from "../Post/Posting";
 import Post from "../Post/Post";
