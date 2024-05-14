@@ -153,3 +153,7 @@
     overflow: hidden;
 }
 
+.posting_button_content{
+    display: flex;
+    justify-content: space-between;
+}

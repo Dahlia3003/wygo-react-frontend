@@ -4,7 +4,7 @@ import './Post.css';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 
 const Post = (props) => {
-    const { post, comments, reactionAuthors, fromUser } = props;
+    const { post, comments, reactionAuthors, fromUser, toUser } = props;
 
     const [commentsFetched, setCommentsFetched] = useState(false);
     const [hasReacted, setHasReacted] = useState(reactionAuthors && reactionAuthors.includes(fromUser));
@@ -33,7 +33,7 @@ const Post = (props) => {
 
     const handleReactClick = async () => {
         try {
-            const response = await fetch('https://wygo-ojzf.onrender.com/reactions/react', {
+            const response = await fetch('http://localhost:8080/reactions/react', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -73,9 +73,11 @@ const Post = (props) => {
                         <div>{post.location}</div>
                     </a>
                 </div>
-                <div className='post_more_button'>
-                    <i className="fas fa-ellipsis-h"></i>
-                </div>
+                { fromUser !== toUser &&            (
+                    <div className='post_more_button'>
+                        <i style={{color:"red"}} className="fas fa-flag"></i>
+                    </div>)
+                }
             </div>
             {showMap && (
                 <MapContainer className={'map_hover'} center={post.location.split(',').map(parseFloat)} zoom={13}>
@@ -115,7 +117,7 @@ const Post = (props) => {
             )}
             <div className='posting_breakline'></div>
             <div className='post_option_buttons'>
-                <a className={`post_option_button ${hasReacted ? 'reacted' : ''}`} onClick={handleReactClick}>
+                <a style={{ cursor: 'pointer' }} className={`post_option_button ${hasReacted ? 'reacted' : ''}`} onClick={handleReactClick}>
                     <i className="far fa-heart"></i>
                     <div>React</div>
                 </a>

@@ -176,13 +176,13 @@
 
 .updownvote_tab{
     display: flex;
-    width: fit-content;
     flex-direction: column;
     background-color: white;
     padding: 1.2rem;
     border-radius: 0.5rem;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
     margin-left: 14.5rem;
+    margin-right: 11.5rem;
 }
 
 .updownvote_content{

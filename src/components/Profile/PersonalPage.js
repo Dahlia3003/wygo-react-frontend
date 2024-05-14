@@ -1,35 +1,27 @@
-import './PersonalPage.css'
-
-
-import React, { useState, useEffect } from 'react';
-
 import {useParams} from "react-router-dom";
-import {Avatar} from "@mui/material";
-import NavBar from "../NavBar/NavBar";
-import PostingInput from "../Post/PostingInput";
+import {useEffect, useState} from "react";
 import Posting from "../Post/Posting";
 import Post from "../Post/Post";
+import PostingInput from "../Post/PostingInput";
+
 
 const PersonalPage = () =>
 {
-    const name = localStorage.getItem('name');
-    const avatar = localStorage.getItem('avatar');
-
     const {username} = useParams();
     const [userData, setUserData] = useState('');
     const [commentList, setCommentList] = useState('')
     const [activeTab, setActiveTab] = useState('posts');
     const [isPostingInputVisible, setPostingInputVisible] = useState(false);
 
-    const [fromUser, setFromUser] = useState(localStorage.getItem('username'));
+    const [fromUser, setFromUser] = useState(localStorage.getItem("username"));
     const [toUser, setToUser] = useState(username);
-    console.log(toUser)
+
     const [hasUpvoted, setHasUpvoted] = useState(false);
     const [hasDownvoted, setHasDownvoted] = useState(false);
 
     const fetchUserData = async () => {
         try {
-            const response = await fetch(`https://wygo-ojzf.onrender.com/profile/${toUser}`);
+            const response = await fetch(`https://wygo-react-frontend.vercel.app/profile/${toUser}`);
             if (response.ok) {
                 const data = await response.json();
                 await Promise.all(data.posts.map(async (post) => {
@@ -38,12 +30,12 @@ const PersonalPage = () =>
                     const month = String(dateObject.getMonth() + 1).padStart(2, '0');
                     const year = dateObject.getFullYear();
                     post.formattedDate = `${day} tháng ${month}, ${year}`;
-                    const commentResponse = await fetch(`https://wygo-ojzf.onrender.com/posts/${post.id}/comments`);
+                    const commentResponse = await fetch(`https://wygo-react-frontend.vercel.app/posts/${post.id}/comments`);
                     if (commentResponse.ok) {
                         const commentData = await commentResponse.json();
                         post.comments = commentData;
                     }
-                    const reactionAuthorsResponse = await fetch(`https://wygo-ojzf.onrender.com/reactions/${post.id}/getauthors`);
+                    const reactionAuthorsResponse = await fetch(`https://wygo-react-frontend.vercel.app/reactions/${post.id}/getauthors`);
                     if (reactionAuthorsResponse.ok) {
                         const reactionAuthors = await reactionAuthorsResponse.json();
                         post.reactionAuthors = reactionAuthors;
@@ -60,7 +52,7 @@ const PersonalPage = () =>
     };
     const fetchUpvoteStatus = async () => {
         try {
-            const response = await fetch(`https://wygo-ojzf.onrender.com/users/hasUpvoted/${fromUser}/${toUser}`);
+            const response = await fetch(`https://wygo-react-frontend.vercel.app/users/hasUpvoted/${fromUser}/${toUser}`);
             if (response.ok) {
                 const data = await response.json();
                 setHasUpvoted(data);
@@ -74,7 +66,7 @@ const PersonalPage = () =>
 
     const fetchDownvoteStatus = async () => {
         try {
-            const response = await fetch(`https://wygo-ojzf.onrender.com/users/hasDownvoted/${fromUser}/${toUser}`);
+            const response = await fetch(`https://wygo-react-frontend.vercel.app/users/hasDownvoted/${fromUser}/${toUser}`);
             if (response.ok) {
                 const data = await response.json();
                 setHasDownvoted(data);
@@ -86,15 +78,38 @@ const PersonalPage = () =>
         }
     }
 
+    const [favorDisfavorData, setFavorDisfavorData] = useState(null);
+
+    // Fetch favor and disfavor lists
+    const fetchFavorDisfavorLists = async () => {
+        try {
+            const favorDisfavorResponse = await fetch(`https://wygo-react-frontend.vercel.app/profile/getfavordisfavor/${toUser}`);
+            if (favorDisfavorResponse.ok) {
+                const favorDisfavorData = await favorDisfavorResponse.json();
+                setFavorDisfavorData(favorDisfavorData);
+            } else {
+                throw new Error('Failed to fetch favor and disfavor lists');
+            }
+        } catch (error) {
+            console.error('Error fetching favor and disfavor lists:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchFavorDisfavorLists();
+    }, []);
+
     useEffect(() => {
         fetchUserData();
         fetchUpvoteStatus();
         fetchDownvoteStatus();
+        fetchFavorDisfavorLists();
     }, [isPostingInputVisible]);
+
 
     const handleUpvoteClick = async () => {
         try {
-            const response = await fetch('https://wygo-ojzf.onrender.com/users/upvote', {
+            const response = await fetch('https://wygo-react-frontend.vercel.app/users/upvote', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -118,7 +133,7 @@ const PersonalPage = () =>
 
     const handleDownvoteClick = async () => {
         try {
-            const response = await fetch('https://wygo-ojzf.onrender.com/users/downvote', {
+            const response = await fetch('https://wygo-react-frontend.vercel.app/downvote', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -141,124 +156,181 @@ const PersonalPage = () =>
     };
 
     return (
-        <div>
-            <NavBar/>
-            <div className='supercontainer'>
-                <div className="header_section">
-                    <div className="background_container">
+        <div className='supercontainer'>
+            <div className="header_section">
+                <div className="background_container">
+                </div>
+                <div className='profile_container'>
+                    <div className='avatar'>
+                        <img src='https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg'/>
                     </div>
-                    <div className='profile_container'>
-                        <div className='avatar'>
-                            <img src={userData?.user?.avtar ?? ''}/>
+                    <div className='profile_info'>
+                        <h1>{userData?.user?.name ?? ''}</h1>
+                        {userData && (<div>
+                            /{userData?.user?.username ?? ''}
+                        </div>)}
+                        <div className='favor'>
+                            <i className='fas fa-arrow-alt-circle-up' style={{color:'green'}}></i>
+                            {userData?.user?.befavoredListSize ?? ''}
+                            <i className='fas fa-arrow-alt-circle-down' style={{color:'red'}}></i>
+                            {userData?.user?.bedisfavoredListSize ?? ''}
                         </div>
-                        <div className='profile_info'>
-                            <h1>{userData?.user?.name ?? ''}</h1>
-                            {userData && (<div>
-                                /{userData?.user?.username ?? ''}
-                            </div>)}
-                            <div className='favor'>
-                                <i className='fas fa-arrow-alt-circle-up' style={{color: 'green'}}></i>
-                                {userData?.user?.befavoredListSize ?? ''}
-                                <i className='fas fa-arrow-alt-circle-down' style={{color: 'red'}}></i>
-                                {userData?.user?.bedisfavoredListSize ?? ''}
-                            </div>
-                        </div>
-                        {fromUser === toUser ? ( // Check if fromUser is the same as toUser
-                            <div className='edit_profile'>
-                                <a>
-                                    <i className="fas fa-pen"></i>
-                                    <div>Chỉnh sửa trang cá nhân</div>
-                                </a>
-                            </div>
-                        ) : (
-                            <div className='edit_profile'>
-                                {/* Render the upvote and downvote buttons */}
-                                <a onClick={handleUpvoteClick}>
-                                    <i className={`fas fa-arrow-alt-circle-up ${hasUpvoted ? 'upvoted' : 'not_updownvoted'}`}></i>
-                                    <div>Upvote</div>
-                                </a>
-                                <a onClick={handleDownvoteClick}>
-                                    <i className={`fas fa-arrow-alt-circle-down ${hasDownvoted ? 'downvoted' : 'not_updownvoted'}`}></i>
-                                    <div>Downvote</div>
-                                </a>
-                                <a>
-                                    <i className="fas fa-pen"></i>
-                                    <div>Chỉnh sửa trang cá nhân</div>
-                                </a>
-                            </div>
-                        )}
                     </div>
-                    <div className='breakline'>
+                    {   fromUser === toUser &&
+                        <div className='edit_profile'>
+                            <a style={{ cursor: 'pointer' }}>
+                                <i className="fas fa-pen"></i>
+                                <div>Chỉnh sửa trang cá nhân</div>
+                            </a>
+                        </div>
+                    }
+                    {fromUser !== toUser && (
+                        <div className='edit_profile'>
+                            {(!hasUpvoted && !hasDownvoted) && (
+                                <>
+                                    <a style={{ cursor: 'pointer' }} onClick={handleUpvoteClick}>
+                                        <i className={`fas fa-arrow-alt-circle-up not_updownvoted`}></i>
+                                        <div>Upvote</div>
+                                    </a>
+                                    <a style={{ cursor: 'pointer' }} onClick={handleDownvoteClick}>
+                                        <i className={`fas fa-arrow-alt-circle-down not_updownvoted`}></i>
+                                        <div>Downvote</div>
+                                    </a>
+                                </>
+                            )}
+                            {hasUpvoted && (
+                                <>
+                                    <a style={{ cursor: 'pointer' }} onClick={handleUpvoteClick}>
+                                        <i className={`fas fa-arrow-alt-circle-up upvoted`}></i>
+                                        <div>Upvoted</div>
+                                    </a>
+                                    <a style={{ cursor: 'not-allowed' }}>
+                                        <i className={`fas fa-arrow-alt-circle-down not_updownvoted`}></i>
+                                        <div>Downvoted</div>
+                                    </a>
+                                </>
+                            )}
+                            {hasDownvoted && (
+                                <>
+                                    <a style={{ cursor: 'not-allowed' }}>
+                                        <i className={`fas fa-arrow-alt-circle-up not_updownvoted`}></i>
+                                        <div>Upvoted</div>
+                                    </a>
+                                    <a style={{ cursor: 'pointer' }} onClick={handleDownvoteClick}>
+                                        <i className={`fas fa-arrow-alt-circle-down downvoted`}></i>
+                                        <div>Downvoted</div>
+                                    </a>
+                                </>
+                            )}
+                            <a style={{ cursor: 'pointer' }}>
+                                <i style={{color:"red"}} className="fas fa-ban"></i>
+                                <div>Report</div>
+                            </a>
+                        </div>
+                    )}
+                </div>
+                <div className='breakline'>
 
-                    </div>
+                </div>
+                {toUser !== fromUser && (
                     <div className='profile_tabs'>
-                        <div onClick={() => setActiveTab('posts')}>Bài viết</div>
-                        <div onClick={() => setActiveTab('Favor')}>Favor</div>
-                        <div onClick={() => setActiveTab('Befavored')}>Befavored</div>
-                        <div onClick={() => setActiveTab('Disfavor')}>Disfavor</div>
+                        <div style={{ cursor: 'pointer' }} onClick={() => setActiveTab('posts')}>Bài viết</div>
                     </div>
-                </div>
-                <div className='content_section'>
-                    {activeTab === 'posts' && (
-                        <div className='post_and_posting_tab'>
-                            <div className='introduce'>
-                                <h2>
-                                    Giới thiệu
-                                </h2>
-                                <div className='bio'>{userData?.user?.bio ?? ''}</div>
-                                <div className='text'>
-                                    <i className="fas fa-home"> </i>
-                                    <div>{userData?.user?.hometown ?? ''}</div>
-                                </div>
-                                <div className='text'>
-                                    <i className="fas fa-venus"></i>
-                                    <div>{userData?.user?.gender ?? ''}</div>
-                                </div>
-                            </div>
-                            <div className='post_and_posting'>
-                                {fromUser === toUser && (
-                                    <Posting togglePostingInput={() => setPostingInputVisible(!isPostingInputVisible)}/>
-                                )}
-                                {userData && userData.posts && userData.posts.map(post => (
-                                    <Post key={post.id} post={post} comments={post.comments}
-                                          reactionAuthors={post.reactionAuthors} fromUser={fromUser} toUser={toUser}/>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                    {activeTab !== 'posts' && (
-                        <div className='updownvote_tab'>
+                )}
+                {toUser === fromUser && (
+                    <div className='profile_tabs'>
+                        <div style={{ cursor: 'pointer' }} onClick={() => setActiveTab('posts')}>Bài viết</div>
+                        <div style={{ cursor: 'pointer' }} onClick={() => setActiveTab('Favor')}>Favor</div>
+                        <div style={{ cursor: 'pointer' }} onClick={() => setActiveTab('Befavored')}>Befavored</div>
+                        <div style={{ cursor: 'pointer' }} onClick={() => setActiveTab('Disfavor')}>Disfavor</div>
+                    </div>
+                )}
+            </div>
+            <div className='content_section'>
+                {activeTab === 'posts' && (
+                    <div className='post_and_posting_tab'>
+                        <div className='introduce'>
                             <h2>
-                                {activeTab}
+                                Giới thiệu
                             </h2>
-                            <div className='updownvote_content'>
-                                <div className='updownvote_card'>
-                                    <div className='updownvote_avatar'>
-                                        <img
-                                            src='https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg'/>
-                                    </div>
-                                    <div className='updownvote_info'>
-                                        <div className='updownvote_name'>
-                                            Huỳnh Nam Duy
-                                        </div>
-                                    </div>
-                                    <div className='updownvote_more_button'>
-                                        <i className="fas fa-ellipsis-h"></i>
-                                    </div>
-                                </div>
+                            <div className='bio'>{userData?.user?.bio ?? ''}</div>
+                            <div className='text'>
+                                <i class="fas fa-home"> </i>
+                                <div>{userData?.user?.hometown ?? ''}</div>
+                            </div>
+                            <div className='text'>
+                                <i class="fas fa-venus"></i>
+                                <div>{userData?.user?.gender ?? ''}</div>
                             </div>
                         </div>
-                    )}
-                </div>
-                {isPostingInputVisible && (
-                    <div className='posting_input_presenter'>
-                        <div className='posting_input_background '></div>
-                        <div className='posting_input'>
-                            <PostingInput togglePostingInput={() => setPostingInputVisible(!isPostingInputVisible)}/>
+                        <div className='post_and_posting'>
+                            {fromUser === toUser && (
+                                <Posting togglePostingInput={() => setPostingInputVisible(!isPostingInputVisible)} />
+                            )}
+                            {userData && userData.posts && userData.posts.filter(post => post.available).map(post => (
+                                <Post key={post.id} post={post} comments={post.comments} reactionAuthors={post.reactionAuthors} fromUser={fromUser} toUser={toUser} />
+                            ))}
+                        </div>
+                    </div>
+                )}
+                {activeTab !== 'posts' && (
+                    <div className='updownvote_tab'>
+                        <h2>{activeTab}</h2>
+                        <div className='updownvote_content'>
+                            {activeTab === 'Favor' && (
+                                <>
+                                    {favorDisfavorData.favorList.map((user, index) => (
+                                        <div key={index} className='updownvote_card'>
+                                            <div className='updownvote_avatar'>
+                                                <img src={user.avatar} alt={user.username} />
+                                            </div>
+                                            <div className='updownvote_info'>
+                                                <div className='updownvote_name'>{user.name}</div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </>
+                            )}
+                            {activeTab === 'Befavored' && (
+                                <>
+                                    {favorDisfavorData.befavorList.map((user, index) => (
+                                        <div key={index} className='updownvote_card'>
+                                            <div className='updownvote_avatar'>
+                                                <img src={user.avatar} alt={user.username} />
+                                            </div>
+                                            <div className='updownvote_info'>
+                                                <div className='updownvote_name'>{user.name}</div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </>
+                            )}
+                            {activeTab === 'Disfavor' && (
+                                <>
+                                    {favorDisfavorData.disfavorList.map((user, index) => (
+                                        <div key={index} className='updownvote_card'>
+                                            <div className='updownvote_avatar'>
+                                                <img src={user.avatar} alt={user.username} />
+                                            </div>
+                                            <div className='updownvote_info'>
+                                                <div className='updownvote_name'>{user.name}</div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </>
+                            )}
                         </div>
                     </div>
                 )}
             </div>
+            {isPostingInputVisible && (
+                <div className='posting_input_presenter'>
+                    <div className='posting_input_background '></div>
+                    <div className='posting_input'>
+                        <PostingInput togglePostingInput={() => setPostingInputVisible(!isPostingInputVisible)}/>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

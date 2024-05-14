@@ -69,7 +69,7 @@ const PostingInput = ({ togglePostingInput }) => {
         if (app) {
             try {
                 let postData = {
-                    author: localStorage.getItem('username'),
+                    author: 'user2',
                     content: inputText,
                     location: `${markerPosition[0]},${markerPosition[1]}`, // Format the location data
                     media: ''
@@ -93,7 +93,7 @@ const PostingInput = ({ togglePostingInput }) => {
                                 const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
                                 postData.media = downloadURL;
 
-                                const response = await fetch('https://wygo-ojzf.onrender.com/posts/posting', {
+                                const response = await fetch('http://localhost:8080/posts/posting', {
                                     method: 'POST',
                                     headers: {
                                         'Content-Type': 'application/json'
@@ -116,7 +116,7 @@ const PostingInput = ({ togglePostingInput }) => {
                     );
                 } else {
                     // If no media is selected, directly post the data
-                    const response = await fetch('https://wygo-ojzf.onrender.com/posts/posting', {
+                    const response = await fetch('http://localhost:8080/posts/posting', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -172,7 +172,7 @@ const PostingInput = ({ togglePostingInput }) => {
         <div className='posting_input_container' onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}>
             <div className='header_text'>
                 <h3>Tạo bài viết</h3>
-                <a onClick={togglePostingInput}>
+                <a style={{ cursor: 'pointer' }} onClick={togglePostingInput}>
                     <i className='fas fa-times'></i>
                 </a>
             </div>
@@ -193,7 +193,7 @@ const PostingInput = ({ togglePostingInput }) => {
                 <MapContainer center={mapPosition} zoom={13} style={{ height: '300px', margin: '1rem' }}>
                     <TileLayer
                         url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        attribution='&copy; <a  href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     />
                     <Marker position={markerPosition}>
                         <Popup>{markerPosition}</Popup>
@@ -231,11 +231,11 @@ const PostingInput = ({ togglePostingInput }) => {
             <div className={`posting_options_mini_button ${isSubmitActive ? 'active' : ''}`}>
                 <div className='text'>Thêm vào bài viết của bạn</div>
                 <div className='icon'>
-                    <i className='far fa-images' onClick={toggleMediaArea}></i>
+                    <i style={{ cursor: 'pointer' }} className='far fa-images' onClick={toggleMediaArea}></i>
                     <i className="fas fa-map-marker-alt"></i>
                 </div>
             </div>
-            <a className="post_submit_button" style={{ backgroundColor: isSubmitActive ? 'blue' : '#e4e6eb' }} onClick={handleSubmit}>
+            <a style={{ cursor: 'pointer' }} className="post_submit_button" style={{ backgroundColor: isSubmitActive ? 'blue' : '#e4e6eb' }} onClick={handleSubmit}>
                 <div className={`blurred_text ${isSubmitActive ? 'text_filled' : ''}`}>Đăng</div>
             </a>
 

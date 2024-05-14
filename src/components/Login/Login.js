@@ -21,6 +21,9 @@ const Login = () => {
 
     useEffect(() => {
         if (localStorage.getItem('loginState')==='ok'){
+            if (localStorage.getItem('isAdmin')==='ok'){
+                navigate('/admin');
+            }
             navigate('/home');
         }
         const timeout = setTimeout(() => {
@@ -32,13 +35,13 @@ const Login = () => {
 
     const handleLogin = () => {
         setIsLoading(true);
-        axios.post('https://wygo-ojzf.onrender.com/users/login', {
+        axios.post('http://localhost:8080/users/login', {
             username: email,
             password: password
         })
             .then(response => {
-
-                axios.get(`https://wygo-ojzf.onrender.com/users/user/${email}`)
+                setIsLoading(false);
+                axios.get(`http://localhost:8080/users/user/${email}`)
                     .then(response => {
                         localStorage.setItem('username', response.data.username);
                         localStorage.setItem('idUser', response.data.id);
@@ -46,10 +49,13 @@ const Login = () => {
                         localStorage.setItem('avatar',response.data.avatar);
                         if (response.data.username==='admin' || response.data.username==='admin1' || response.data.username==='admin2'){
                             localStorage.setItem('isAdmin', 'ok');
+                            navigate('/admin');
                         }
-                        localStorage.setItem('name', response.data.name);
-                        setIsLoading(false);
-                        navigate('/home');
+                        else{
+                            localStorage.setItem('name', response.data.name);
+                            navigate('/home');
+                        }
+
                     })
             })
             .catch(error => {
