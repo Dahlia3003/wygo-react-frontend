@@ -19,6 +19,7 @@ import AdminDashboard from "./components/Admin/AdminDashboard";
 import ViewPostReport from "./components/Admin/ViewPostReport";
 
 import UserInfoWrapper from "./components/Admin/UserInfoWrapper";
+import ViewPostDetail from "./components/Post/ViewPostDetail";
 
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
                                                                     <UserInfoWrapper>
                                                                     </UserInfoWrapper>
                                                                 </>} />
+                    <Route path="/posts/:id" element={<ViewPostDetail  />} />
                 </Routes>
             </div>
         </Router>

@@ -4,6 +4,7 @@ import './Post.css';
 import './PostContainer.css'
 import {useEffect, useState} from "react";
 import axios from "axios";
+import CommentForm from "../Comment/CommentForm";
 const ViewPostDetail = () => {
     const { id } = useParams();
     const [post, setPost] = useState(null);
@@ -19,7 +20,7 @@ const ViewPostDetail = () => {
             postId : id
         })
             .then(response => {
-                console.log('post')
+                console.log(response.data)
                 setPost(response.data)
                 setToUser(response.data.author.username);
                 setFromUser(localStorage.getItem('username'));
@@ -36,7 +37,7 @@ const ViewPostDetail = () => {
             })
         const timeout = setTimeout(() => {
             setContentVisible(true);
-        }, 1000);
+        }, 5000);
 
         return () => clearTimeout(timeout);
     }, []);
@@ -51,6 +52,7 @@ const ViewPostDetail = () => {
                               reactionAuthors={reactionAuthors}
                               fromUser={fromUser}
                               toUser={toUser} />
+                        <CommentForm post={id}></CommentForm>
                     </div>
                 </div>
             )}

@@ -1,12 +1,12 @@
 import './Posting.css'
 
-const Posting = ({ togglePostingInput }) =>
+const Posting = ({ togglePostingInput, avatar, name }) =>
 {
     return(
         <div className='posting_container'>
             <div className='posting_area'>
                 <div className='mini_avatar'>
-                    <img src='https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg'></img>
+                    <img src={localStorage.getItem("avatar")}></img>
                 </div>
                 <div className='posting_button'>
                     <a style={{ cursor: 'pointer' }} className='posting_button_content' onClick={togglePostingInput}>

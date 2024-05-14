@@ -3,6 +3,7 @@ import L from 'leaflet';
 import './Post.css';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import ReportPost from "../Report/ReportPost";
+import {useNavigate} from "react-router-dom";
 
 
 
@@ -84,11 +85,21 @@ const Post = (props) => {
         setShowReport(false);
     };
 
+    const navigate = useNavigate();
+
+    const handleImageClick = () => {
+        navigate(`/profile/${post.author.username}`);
+    };
+
+    const handleCommentClick = () => {
+        navigate(`/posts/${post.id}`);
+    };
+
     return (
         <div className='post_container'>
             <div className='post_header'>
-                <div className='mini_avatar'>
-                    <img src={post.author.avatar} alt='Avatar'></img>
+                <div className='mini_avatar' onClick={handleImageClick}>
+                    <img src={post.author.avatar} alt='Avatar' ></img>
                 </div>
                 <div className='post_header_info'>
                     <h4>{post.author.name}</h4>
@@ -151,7 +162,7 @@ const Post = (props) => {
                     <i className="far fa-heart"></i>
                     <div>React</div>
                 </a>
-                <div className='post_option_button'>
+                <div className='post_option_button' onClick={handleCommentClick}>
                     <i className="far fa-comment"></i>
                     <div>Bình luận</div>
                 </div>

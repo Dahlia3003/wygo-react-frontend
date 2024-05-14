@@ -19,6 +19,7 @@ const MapWithDynamicCenter = ({ mapPosition }) => {
 };
 
 const PostingInput = ({ togglePostingInput }) => {
+
     const [mediaAreaVisible, setMediaAreaVisible] = useState(false);
     const [selectedMedia, setSelectedMedia] = useState(null);
     const [mapPosition, setMapPosition] = useState([10.762622, 106.660172]); // Default position
@@ -180,10 +181,10 @@ const PostingInput = ({ togglePostingInput }) => {
             <div className='posting_input_content'>
                 <div className='posting_input_content_header'>
                     <div className='mini_avatar'>
-                        <img src='https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg' alt='avatar' />
+                        <img src={localStorage.getItem("avatar")} alt='avatar' />
                     </div>
                     <div className='post_header_info'>
-                        <h4>Công Phan</h4>
+                        <h4>{localStorage.getItem("name")}</h4>
                         <div>{formattedDateTime}</div>
                     </div>
                 </div>

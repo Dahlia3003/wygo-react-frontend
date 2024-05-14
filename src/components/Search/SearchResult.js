@@ -1,8 +1,9 @@
     import React, { useState, useEffect } from 'react';
-    import axios from 'axios';
+    import axios, {post} from 'axios';
     import { Typography, Grid } from '@mui/material';
     import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
     import '../Post/Post.css';
+    import {useNavigate} from "react-router-dom";
 
     // Avatar mặc định cho trường hợp avatar trống
     const defaultAvatar = 'https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg';
@@ -11,6 +12,8 @@
     const getUserName = (user) => {
         return user.name || "Người dùng";
     };
+
+
 
     const SearchResult = ({ query }) => {
         const [results, setResults] = useState({ users: [], posts: [] });
@@ -37,6 +40,15 @@
             search();
         }, [query]);
 
+        const navigate = useNavigate();
+
+        const handleCard = (username) => {
+            navigate(`/profile/${username}`);
+        };
+
+        const handlePostClick = (id) => {
+            navigate(`/posts/${id}`);
+        };
 
         const handleScroll = (scrollOffset) => {
             const container = document.getElementById('userContainer');
@@ -56,9 +68,9 @@
                 </Typography>
                 <div className="user_scroll_container">
                     <ArrowBackIos className="scroll_button_left" onClick={() => handleScroll(-100)} />
-                    <div id="userContainer" className="user_list_container">
+                    <div id="userContainer" className="user_list_container" >
                         {results.users.map(user => (
-                            <div key={user.id} className="user_card">
+                            <div key={user.id} className="user_card" onClick={() => handleCard(user.username)}>
                                 <img src={user.avatar || defaultAvatar} alt={getUserName(user)} className="user_avatar" />
                                 <div className="user_name">{getUserName(user)}</div>
                                 <div className="user_username">{user.username}</div>
@@ -74,7 +86,7 @@
                     {results.posts.map(post => (
                         <Grid item xs={12} key={post.id}>
                         <div>
-                            <div className='post_container'>
+                            <div className='post_container' onClick={() => handlePostClick(post.id)}>
                                 <div className='post_header'>
                                     <div className='mini_avatar'>
                                         <img src={post.author.avatar || defaultAvatar} alt='Avatar' />

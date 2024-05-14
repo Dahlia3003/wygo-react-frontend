@@ -6,6 +6,7 @@ import SendIcon from '@mui/icons-material/Send';
 import CircularProgress from '@mui/material/CircularProgress';
 import InputAdornment from '@mui/material/InputAdornment';
 import { styled } from '@mui/material/styles';
+import {useParams} from "react-router-dom";
 
 const StyledTextField = styled(TextField)({
     borderRadius: '20px',
@@ -18,18 +19,18 @@ const StyledTextField = styled(TextField)({
     },
 });
 
-const CommentForm = () => {
+const CommentForm = (post ) => {
+    const { id } = useParams();
     const [content, setContent] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true); // Bắt đầu quá trình gửi
-
         try {
             const response = await axios.post('https://wygo-ojzf.onrender.com/posts/comment', {
-                postId: 2,
-                authorUsername: 'test',
+                postId: id,
+                authorUsername: localStorage.getItem("username"),
                 content: content
             });
             alert('Bình luận thành công!');
