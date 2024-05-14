@@ -69,7 +69,7 @@ const PostingInput = ({ togglePostingInput }) => {
         if (app) {
             try {
                 let postData = {
-                    author: 'user2',
+                    author: localStorage.getItem("username"),
                     content: inputText,
                     location: `${markerPosition[0]},${markerPosition[1]}`, // Format the location data
                     media: ''

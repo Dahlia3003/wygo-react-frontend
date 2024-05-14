@@ -4,7 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 import {Box, IconButton, Snackbar, Typography} from "@mui/material";
 
-const ReportPost = ({ onClose }) => {
+const ReportUser = ({ onClose }) => {
     const [selectedReason, setSelectedReason] = useState('');
     const [otherReason, setOtherReason] = useState('');
 
@@ -13,7 +13,7 @@ const ReportPost = ({ onClose }) => {
 
     const handleReport = () => {
         const data = {
-            authorUsername: "imloki",
+            authorUsername: localStorage.getItem("username"),
             targetUsername: "phancong1609",
             reason: selectedReason === 'Khác' ? otherReason : selectedReason
         };
@@ -140,4 +140,4 @@ const ReportPost = ({ onClose }) => {
     );
 };
 
-export default ReportPost;
+export default ReportUser;
