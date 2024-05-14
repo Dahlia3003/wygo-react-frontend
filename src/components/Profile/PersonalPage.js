@@ -13,18 +13,17 @@ import Post from "../Post/Post";
 const PersonalPage = () =>
 {
     const name = localStorage.getItem('name');
-    const username = localStorage.getItem('username');
     const avatar = localStorage.getItem('avatar');
 
-    const {query} = useParams();
+    const {username} = useParams();
     const [userData, setUserData] = useState('');
     const [commentList, setCommentList] = useState('')
     const [activeTab, setActiveTab] = useState('posts');
     const [isPostingInputVisible, setPostingInputVisible] = useState(false);
 
     const [fromUser, setFromUser] = useState(localStorage.getItem('username'));
-    const [toUser, setToUser] = useState(query);
-
+    const [toUser, setToUser] = useState(username);
+    console.log(toUser)
     const [hasUpvoted, setHasUpvoted] = useState(false);
     const [hasDownvoted, setHasDownvoted] = useState(false);
 

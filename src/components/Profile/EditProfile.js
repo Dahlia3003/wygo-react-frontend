@@ -5,6 +5,9 @@ import {makeStyles} from '@mui/styles';
 import {Close as CloseIcon, Edit as EditIcon} from '@mui/icons-material';
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import {initializeApp} from "firebase/app";
+import {getDownloadURL, getStorage, ref as storageRef, uploadBytesResumable} from "firebase/storage";
 import NavBar from "../NavBar/NavBar";
 
 
@@ -81,6 +84,7 @@ const EditProfile = () => {
         email: false,
         bio: false,
         otp: false,
+        fake: false,
     });
 
     const handleEditClick = (field) => {
@@ -150,6 +154,9 @@ const EditProfile = () => {
                 newInfo: newInfo,
             })
                 .then(response => {
+                    if (changeType==='name'){
+                        localStorage.setItem('name', newInfo);
+                    }
                     setOpenSnackbar(true);
                     setSnackbarMessage(response.data);
                     setSnackbarColor('success');
@@ -232,12 +239,63 @@ const EditProfile = () => {
                 });
             })
             .catch(error => {
-                if(error.response!==null){
-                    setOpenSnackbar(true);
-                    setSnackbarMessage(error.response.data);
-                }
+                setOpenSnackbar(true);
+                setSnackbarMessage(error.response.data);
             });
     }, []);
+
+    const firebaseConfig = {
+        apiKey : "AIzaSyDzVEplqgnutPKvGohdq-OVD1pyyPQYHWE" ,
+        authDomain : "wygofirebase.firebaseapp.com" ,
+        databaseURL : "https://wygofirebase-default-rtdb.firebaseio.com" ,
+        projectId : "wygofirebase" ,
+        storageBucket : "wygofirebase.appspot.com" ,
+        messagingSenderId : "116194002232" ,
+        appId : "1:116194002232:web:3e27fdef9a117e0de0adcd"
+    };
+    const app = initializeApp(firebaseConfig);
+    const [selectedMedia, setSelectedMedia] = useState(null);
+    const handleUploadAvatar = (event) => {
+        const file = event.target.files[0];
+        setSelectedMedia(file);
+    };
+    useEffect(() => {
+        if (app) {
+            console.log(selectedMedia);
+            try {
+                if (selectedMedia) {
+                    console.log("in2");
+                    const storage = getStorage(app);
+                    const storageReference = storageRef(storage, 'media/' + selectedMedia.name);
+                    const uploadTask = uploadBytesResumable(storageReference, selectedMedia);
+
+                    uploadTask.on('state_changed',
+                        (snapshot) => {
+                            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                            console.log('Upload is ' + progress + '% done');
+                        },
+                        (error) => {
+                            console.error('Error uploading media:', error);
+                        },
+                        async () => {
+                            try {
+                                const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                                localStorage.setItem('avatar', downloadURL);
+                                console.log(downloadURL);
+                                handleUpdateClick(username, 'avatar', downloadURL, 'fake');
+                                //setUserTempData({avatar : downloadURL});
+                                //setUserData({avatar: downloadURL});
+                            } catch (error) {
+                                console.error('Error sending post data:', error);
+                            }
+                        }
+                    );
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    }, [selectedMedia])
 
     return (
         <div>
@@ -249,6 +307,18 @@ const EditProfile = () => {
                         <Paper className={classes.paper}>
                             <div className={classes.avatarContainer}>
                                 <Avatar className={classes.avatar} src={userData.avatar} style={{ width: '10rem', height: '10rem' }} />
+                                <input
+                                    id='file-upload'
+                                    type='file'
+                                    accept='image/*,video/*'
+                                    onChange={handleUploadAvatar}
+                                    style={{ display: 'none' }}
+                                />
+                                <label htmlFor="file-upload">
+                                    <IconButton component="span">
+                                        <CloudUploadIcon />
+                                    </IconButton>
+                                </label>
                                 {editMode.bio ? (
                                     <TextField
                                         fullWidth
@@ -285,7 +355,7 @@ const EditProfile = () => {
                             <Typography variant="h6" gutterBottom>
                                 Thông Tin Người Dùng
                             </Typography>
-                            <div className={classes.infoContainer}>
+                            <div className={classes.infoContainer} style={{marginLeft:"1rem"}}>
                                 <Typography variant="body1" className={classes.infoText}>Họ và Tên:</Typography>
                                 <div style={{ flexGrow: 1 }}>
                                     {editMode.fullName ? (
@@ -306,7 +376,7 @@ const EditProfile = () => {
                             </div>
 
                             {/* Birthday */}
-                            <div className={classes.infoContainer}>
+                            <div className={classes.infoContainer} style={{marginLeft:"1rem"}}>
                                 <Typography variant="body1" className={classes.infoText}>Ngày Sinh:</Typography>
                                 <div style={{ display: 'flex', alignItems: 'center' }}>
                                     {editMode.birthday ? (
@@ -336,7 +406,7 @@ const EditProfile = () => {
 
 
                             {/* Address */}
-                            <div className={classes.infoContainer}>
+                            <div className={classes.infoContainer} style={{marginLeft:"1rem"}}>
                                 <Typography variant="body1" className={classes.infoText}>Địa Chỉ:</Typography>
                                 <div style={{ flexGrow: 1 }}>
                                     {editMode.address ? (
@@ -357,7 +427,7 @@ const EditProfile = () => {
                             </div>
 
                             {/* Gender */}
-                            <div className={classes.infoContainer}>
+                            <div className={classes.infoContainer} style={{marginLeft:"1rem"}}>
                                 <Typography variant="body1" className={classes.infoText}>Giới Tính:</Typography>
                                 <div style={{ flexGrow: 1 }}>
                                     {editMode.gender ? (
@@ -382,7 +452,7 @@ const EditProfile = () => {
                                 Thông Tin Tài Khoản
                             </Typography>
                             {/* Username */}
-                            <div className={classes.infoContainer}>
+                            <div className={classes.infoContainer} style={{marginTop:"1.2rem"}} style={{marginTop:"1.2rem" ,marginLeft:"1rem"}}>
                                 <Typography variant="body1" className={classes.infoText}>Username:</Typography>
                                 <div style={{ flexGrow: 1 }}>
                                     {editMode.username ? (
@@ -392,17 +462,9 @@ const EditProfile = () => {
                                         <Typography variant="body1">{userData.username}</Typography>
                                     )}
                                 </div>
-                                {editMode.username ? (
-                                    <>
-                                        <Button onClick={() => handleUpdateClick(username, 'username', userTempData.username, 'username')}>Cập Nhật</Button>
-                                        <Button onClick={() => handleCancelClick('username')}>Hủy</Button>
-                                    </>
-                                ) : (
-                                    <IconButton onClick={() => handleEditClick('username')}><EditIcon /></IconButton>
-                                )}
                             </div>
                             {/* Password*/}
-                            <div className={classes.infoContainer}>
+                            <div className={classes.infoContainer} style={{marginLeft:"1rem"}}>
                                 <Typography variant="body1" className={classes.infoText}>Mật Khẩu:</Typography>
                                 <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
                                     {editMode.password ? (
@@ -436,7 +498,7 @@ const EditProfile = () => {
                                 )}
                             </div>
                             {/* Email */}
-                            <div className={classes.infoContainer}>
+                            <div className={classes.infoContainer} style={{marginLeft:"1rem"}}>
                                 <Typography variant="body1" className={classes.infoText}>Email:</Typography>
                                 <div style={{ flexGrow: 1 }}>
                                     {!editMode.email && !editMode.otp && (

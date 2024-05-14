@@ -13,8 +13,8 @@ const ReportPost = ({ onClose }) => {
 
     const handleReport = () => {
         const data = {
-            authorUsername: "test",
-            targetUsername: "test1",
+            authorUsername: "imloki",
+            targetUsername: "phancong1609",
             reason: selectedReason === 'Khác' ? otherReason : selectedReason
         };
 

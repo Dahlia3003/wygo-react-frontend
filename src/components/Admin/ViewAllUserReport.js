@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './ViewAllUserReport.css';
 import { CheckCircleOutline, CancelOutlined } from '@mui/icons-material';
+import {Link} from "react-router-dom";
 
 const ViewAllUserReport = () => {
     const [reports, setReports] = useState([]);
@@ -60,6 +61,9 @@ const ViewAllUserReport = () => {
                                     /{report.reportObject.username}
                                 </div>
                             </div>
+                        </td>
+                        <td>
+                            <Link to={`admin/urp/${report.reportObject.username}`}>{report.reportObject.content}</Link>
                         </td>
                         <td>{report.reportType}</td>
                         <td>
