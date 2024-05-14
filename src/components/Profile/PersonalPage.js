@@ -21,7 +21,7 @@ const PersonalPage = () =>
 
     const fetchUserData = async () => {
         try {
-            const response = await fetch(`https://wygo-react-frontend.vercel.app/profile/${toUser}`);
+            const response = await fetch(`https://wygo-ojzf.onrender.com/profile/${toUser}`);
             if (response.ok) {
                 const data = await response.json();
                 await Promise.all(data.posts.map(async (post) => {
@@ -30,12 +30,12 @@ const PersonalPage = () =>
                     const month = String(dateObject.getMonth() + 1).padStart(2, '0');
                     const year = dateObject.getFullYear();
                     post.formattedDate = `${day} tháng ${month}, ${year}`;
-                    const commentResponse = await fetch(`https://wygo-react-frontend.vercel.app/posts/${post.id}/comments`);
+                    const commentResponse = await fetch(`https://wygo-ojzf.onrender.com/posts/${post.id}/comments`);
                     if (commentResponse.ok) {
                         const commentData = await commentResponse.json();
                         post.comments = commentData;
                     }
-                    const reactionAuthorsResponse = await fetch(`https://wygo-react-frontend.vercel.app/reactions/${post.id}/getauthors`);
+                    const reactionAuthorsResponse = await fetch(`https://wygo-ojzf.onrender.com/reactions/${post.id}/getauthors`);
                     if (reactionAuthorsResponse.ok) {
                         const reactionAuthors = await reactionAuthorsResponse.json();
                         post.reactionAuthors = reactionAuthors;
@@ -52,7 +52,7 @@ const PersonalPage = () =>
     };
     const fetchUpvoteStatus = async () => {
         try {
-            const response = await fetch(`https://wygo-react-frontend.vercel.app/users/hasUpvoted/${fromUser}/${toUser}`);
+            const response = await fetch(`https://wygo-ojzf.onrender.com/users/hasUpvoted/${fromUser}/${toUser}`);
             if (response.ok) {
                 const data = await response.json();
                 setHasUpvoted(data);
@@ -66,7 +66,7 @@ const PersonalPage = () =>
 
     const fetchDownvoteStatus = async () => {
         try {
-            const response = await fetch(`https://wygo-react-frontend.vercel.app/users/hasDownvoted/${fromUser}/${toUser}`);
+            const response = await fetch(`https://wygo-ojzf.onrender.com/users/hasDownvoted/${fromUser}/${toUser}`);
             if (response.ok) {
                 const data = await response.json();
                 setHasDownvoted(data);
@@ -83,7 +83,7 @@ const PersonalPage = () =>
     // Fetch favor and disfavor lists
     const fetchFavorDisfavorLists = async () => {
         try {
-            const favorDisfavorResponse = await fetch(`https://wygo-react-frontend.vercel.app/profile/getfavordisfavor/${toUser}`);
+            const favorDisfavorResponse = await fetch(`https://wygo-ojzf.onrender.com/profile/getfavordisfavor/${toUser}`);
             if (favorDisfavorResponse.ok) {
                 const favorDisfavorData = await favorDisfavorResponse.json();
                 setFavorDisfavorData(favorDisfavorData);
@@ -109,7 +109,7 @@ const PersonalPage = () =>
 
     const handleUpvoteClick = async () => {
         try {
-            const response = await fetch('https://wygo-react-frontend.vercel.app/users/upvote', {
+            const response = await fetch('https://wygo-ojzf.onrender.com/users/upvote', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -133,7 +133,7 @@ const PersonalPage = () =>
 
     const handleDownvoteClick = async () => {
         try {
-            const response = await fetch('https://wygo-react-frontend.vercel.app/downvote', {
+            const response = await fetch('https://wygo-ojzf.onrender.com/downvote', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
