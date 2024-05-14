@@ -52,7 +52,7 @@ const NavBar = () => {
                             <HomeIcon />
                         </IconButton>
                         <SearchBar onSearch={search} />
-                        <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', marginLeft: 'auto' }} onClick={() => window.location.href = `https://wygo-react-frontend.vercel.app/${username}`}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', marginLeft: 'auto' }} onClick={() => window.location.href = `https://wygo-react-frontend.vercel.app/profile/${username}`}>
                             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginRight: 1 }}>
                                 <Typography variant="h6" noWrap component="div" sx={{ color: '#000', fontWeight: 'bold' }}>
                                     {name}
