@@ -1,10 +1,13 @@
 import { useParams } from "react-router-dom";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import Posting from "../Post/Posting";
 import Post from "../Post/Post";
 import PostingInput from "../Post/PostingInput";
 import './PersonalPage.css'
 import NavBar from "../NavBar/NavBar";
+import ReportPost from "../Report/ReportPost";
+import ReportUser from "../Report/ReportUserForm";
+import ReportUserForm from "../Report/ReportUserForm";
 
 const PersonalPage = () =>
 {
@@ -14,7 +17,7 @@ const PersonalPage = () =>
     const [commentList, setCommentList] = useState('')
     const [activeTab, setActiveTab] = useState('posts');
     const [isPostingInputVisible, setPostingInputVisible] = useState(false);
-
+    const [showReport, setShowReport] = useState(false);
     const [fromUser, setFromUser] = useState(localStorage.getItem("username"));
     const [toUser, setToUser] = useState(username);
 
@@ -94,6 +97,13 @@ const PersonalPage = () =>
         } catch (error) {
             console.error('Error fetching favor and disfavor lists:', error);
         }
+    };
+    const handleReportClick = () => {
+        setShowReport(true);
+    };
+
+    const handleCloseReport = () => {
+        setShowReport(false);
     };
 
     useEffect(() => {
@@ -179,14 +189,6 @@ const PersonalPage = () =>
                                 {userData?.user?.bedisfavoredListSize ?? ''}
                             </div>
                         </div>
-                        {fromUser === toUser &&
-                            <div className='edit_profile'>
-                                <a style={{cursor: 'pointer'}}>
-                                    <i className="fas fa-pen"></i>
-                                    <div>Chỉnh sửa trang cá nhân</div>
-                                </a>
-                            </div>
-                        }
                         {fromUser !== toUser && (
                             <div className='edit_profile'>
                                 {(!hasUpvoted && !hasDownvoted) && (
@@ -225,8 +227,8 @@ const PersonalPage = () =>
                                         </a>
                                     </>
                                 )}
-                                <a style={{cursor: 'pointer'}}>
-                                    <i style={{color: "red"}} className="fas fa-ban"></i>
+                                <a style={{cursor: 'pointer'}} onClick={handleReportClick}>
+                                    <i style={{color: "red"}} className="fas fa-ban" ></i>
                                     <div>Report</div>
                                 </a>
                             </div>
@@ -335,6 +337,7 @@ const PersonalPage = () =>
                         </div>
                     </div>
                 )}
+                {showReport && <ReportUserForm username={userData.user.username}  onClose={handleCloseReport} />}
             </div>
         </div>
     )

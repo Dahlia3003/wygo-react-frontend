@@ -8,7 +8,6 @@ import EditProfile from "./components/Profile/EditProfile";
 import ForgotPassword from "./components/Login/ForgotPassword";
 import ReportPost from "./components/Report/ReportPost";
 import Login from "./components/Login/Login";
-import ReportUserForm from "./components/ReportUserForm";
 import CommentForm from "./components/Comment/CommentForm";
 import CommentLoader from "./components/Comment/CommentLoader";
 import PostDetail_Report from "./components/ResultReport/PostDetail_Report";
@@ -20,6 +19,7 @@ import ViewPostReport from "./components/Admin/ViewPostReport";
 
 import UserInfoWrapper from "./components/Admin/UserInfoWrapper";
 import ViewPostDetail from "./components/Post/ViewPostDetail";
+import ReportUserForm from "./components/Report/ReportUserForm";
 
 
 function App() {

@@ -24,7 +24,7 @@ const ReportPost = ({ postId, userReportedId, onClose }) => {
                 setOpenSnackbar(true);
                 setSnackbarMessage(response.data);
                 setSnackbarColor('success');
-                onClose();
+                //onClose();
             })
             .catch(error => {
                 if (error.response) {

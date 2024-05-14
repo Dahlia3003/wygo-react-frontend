@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import './Report/ReportPost.css';
+import './ReportPost.css'
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 import {Box, IconButton, Snackbar, Typography} from "@mui/material";
 
-const ReportUser = ({ onClose }) => {
+const ReportUser = ({ username, onClose }) => {
     const [selectedReason, setSelectedReason] = useState('');
     const [otherReason, setOtherReason] = useState('');
 
@@ -14,7 +14,7 @@ const ReportUser = ({ onClose }) => {
     const handleReport = () => {
         const data = {
             authorUsername: localStorage.getItem("username"),
-            targetUsername: "",
+            targetUsername: username,
             reason: selectedReason === 'Khác' ? otherReason : selectedReason
         };
 

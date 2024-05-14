@@ -5,6 +5,7 @@ import './PostContainer.css'
 import {useEffect, useState} from "react";
 import axios from "axios";
 import CommentForm from "../Comment/CommentForm";
+import NavBar from "../NavBar/NavBar";
 const ViewPostDetail = () => {
     const { id } = useParams();
     const [post, setPost] = useState(null);
@@ -43,20 +44,24 @@ const ViewPostDetail = () => {
     }, []);
     return (
         <>
-            {contentVisible && (
-                <div style={{ display: 'flex',  justifyContent: 'center', width: '100%', marginTop: '2rem' }}>
-                    <div className='post_container_modifier'>
-                        <Post key={id}
-                              post={post}
-                              comments={comments}
-                              reactionAuthors={reactionAuthors}
-                              fromUser={fromUser}
-                              toUser={toUser} />
-                        <CommentForm post={id}></CommentForm>
+            <NavBar></NavBar>
+            <>
+                {contentVisible && (
+                    <div style={{ display: 'flex',  justifyContent: 'center', width: '100%', marginTop: '2rem' }}>
+                        <div className='post_container_modifier'>
+                            <Post key={id}
+                                  post={post}
+                                  comments={comments}
+                                  reactionAuthors={reactionAuthors}
+                                  fromUser={fromUser}
+                                  toUser={toUser} />
+                            <CommentForm post={id}></CommentForm>
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
+            </>
         </>
+
     );
 }
 export default ViewPostDetail

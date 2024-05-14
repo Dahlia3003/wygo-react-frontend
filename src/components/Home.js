@@ -124,7 +124,7 @@ const Home = () => {
     },[])
     const navigate = useNavigate();
     const redirectToUserDetail = (username) => {
-        navigate('/edit-profile');
+        navigate(`/profile/${username}`);
     }
 
     ///////////////////////////////////////////////////
