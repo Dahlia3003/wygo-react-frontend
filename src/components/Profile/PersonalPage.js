@@ -162,7 +162,7 @@ const PersonalPage = () =>
                 </div>
                 <div className='profile_container'>
                     <div className='avatar'>
-                        {userData?.user?.avatar ?? ''}
+                        <img src=  {userData?.user?.avatar ?? ''}/>
                     </div>
                     <div className='profile_info'>
                         <h1>{userData?.user?.name ?? ''}</h1>

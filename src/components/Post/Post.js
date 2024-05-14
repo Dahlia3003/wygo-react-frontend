@@ -88,7 +88,7 @@ const Post = (props) => {
         <div className='post_container'>
             <div className='post_header'>
                 <div className='mini_avatar'>
-                    <img src='https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg' alt='Avatar'></img>
+                    <img src={post.author.avatar} alt='Avatar'></img>
                 </div>
                 <div className='post_header_info'>
                     <h4>{post.author.name}</h4>

@@ -14,7 +14,7 @@ const ReportUser = ({ onClose }) => {
     const handleReport = () => {
         const data = {
             authorUsername: localStorage.getItem("username"),
-            targetUsername: "phancong1609",
+            targetUsername: "",
             reason: selectedReason === 'Khác' ? otherReason : selectedReason
         };
 

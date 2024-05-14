@@ -93,7 +93,7 @@ const PostingInput = ({ togglePostingInput }) => {
                                 const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
                                 postData.media = downloadURL;
 
-                                const response = await fetch('http://localhost:8080/posts/posting', {
+                                const response = await fetch('https://wygo-ojzf.onrender.com/posts/posting', {
                                     method: 'POST',
                                     headers: {
                                         'Content-Type': 'application/json'
@@ -116,7 +116,7 @@ const PostingInput = ({ togglePostingInput }) => {
                     );
                 } else {
                     // If no media is selected, directly post the data
-                    const response = await fetch('http://localhost:8080/posts/posting', {
+                    const response = await fetch('https://wygo-ojzf.onrender.com/posts/posting', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
